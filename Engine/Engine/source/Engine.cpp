@@ -1,70 +1,115 @@
 #include <Engine/Engine.h>
 
+#include <Windows.h>
 #include <d3d11.h>
-#include <wrl/client.h>
+#include <d3dcompiler.h>
 
-#include <CommonStates.h>
+#include <cstddef>
+#include <cstdint>
+#include <new>
 
-using Microsoft::WRL::ComPtr;
+// MACROS
+#define SAFE_RELEASE(x) if(x != nullptr) x->Release(); x = nullptr;
 
-const wchar_t* Engine_GetName() noexcept
-{
-    return L"Game Engine DX11";
+#define MESSAGE( classObj, method, state )   \
+{                                            \
+   std::wostringstream os_;                  \
+   os_ << classObj << "::" << method << " : " << "[CREATION OF RESOURCE " << ": " << state << "] \n"; \
+   OutputDebugStringW( os_.str().c_str() );  \
 }
 
-int Engine_RunSmokeTest() noexcept
+#define ERROR(classObj, method, errorMSG)                     \
+{                                                             \
+    try {                                                     \
+        std::wostringstream os_;                              \
+        os_ << L"ERROR : " << classObj << L"::" << method     \
+            << L" : " << errorMSG << L"\n";                   \
+        OutputDebugStringW(os_.str().c_str());                \
+    } catch (...) {                                           \
+        OutputDebugStringW(L"Failed to log error message.\n");\
+    }                                                         \
+}
+
+template<typename T>
+void SafeRelease(T * &object) noexcept
 {
-    ComPtr<ID3D11Device> device;
-    ComPtr<ID3D11DeviceContext> context;
-
-    HRESULT result = D3D11CreateDevice(
-        nullptr,
-        D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,
-        0,
-        nullptr,
-        0,
-        D3D11_SDK_VERSION,
-        device.GetAddressOf(),
-        nullptr,
-        context.GetAddressOf()
-    );
-
-    // Utiliza el renderizador por software si no hay GPU disponible.
-    if (FAILED(result))
+    if (object != nullptr)
     {
-        device.Reset();
-        context.Reset();
+        object->Release();
+        object = nullptr;
+    }
+}
 
-        result = D3D11CreateDevice(
+struct 
+Engine::Implementation 
+{
+    struct Vertex
+    {
+        float position[3];
+        float color[4];
+    };
+
+    HWND window = nullptr;
+
+    std::uint32_t width = 0;
+    std::int32_t height = 0;
+
+    ID3D11Device* device = nullptr;
+    ID3D11DeviceContext* context = nullptr;
+    IDXGISwapChain* swapChain = nullptr;
+    ID3D11RenderTargetView* renderTarget = nullptr;
+
+    ID3D11VertexShader* vertexShader = nullptr;
+    ID3D11PixelShader* pixelShader = nullptr;
+    ID3D11InputLayout* inputLayout = nullptr;
+    ID3D11Buffer* vertexBuffer = nullptr;
+
+    static bool 
+        CompileShader(const wchar_t* filename, const char* entryPoint,
+            const char* shaderModel, ID3DBlob** shaderBlod) noexcept {
+        if (!filename || !entryPoint || !shaderModel || !shaderBlod) {
+            return false;
+        }
+
+        *shaderBlod = nullptr;
+
+        UINT compileFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+
+#ifdef _DEBUG
+        compileFlags |= D3DCOMPILE_DEBUG;
+        compileFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
+#else
+        compileFlags |= D3DCOMPILE_OPTIMIZATION_LEVEL3;
+#endif
+
+        ID3DBlob* errors = nullptr;
+        const HRESULT result = D3DCompileFromFile(
+            filename,
             nullptr,
-            D3D_DRIVER_TYPE_WARP,
-            nullptr,
+            D3D_COMPILE_STANDARD_FILE_INCLUDE,
+            entryPoint,
+            shaderModel,
+            compileFlags,
             0,
-            nullptr,
-            0,
-            D3D11_SDK_VERSION,
-            device.GetAddressOf(),
-            nullptr,
-            context.GetAddressOf()
+            shaderBlod,
+            &errors
         );
+
+        if (errors)
+        {
+            OutputDebugStringA(
+                static_cast<const char*>(
+                    errors->GetBufferPointer()
+                    )
+            );
+            SafeRelease(errors);
+        }
+        
+        if (FAILED(result))
+        {
+            SafeRelease(*shaderBlod);
+            return false;
+        }
+        return false;
     }
-
-    if (FAILED(result))
-        return 0;
-
-    try
-    {
-        // Obliga a compilar y enlazar DirectXTK.
-        DirectX::CommonStates states(device.Get());
-
-        if (states.LinearWrap() == nullptr)
-            return 0;
-    }
-    catch (...)
-    {
-        return 0;
-    }
-
-    return 1;
-}
+};
