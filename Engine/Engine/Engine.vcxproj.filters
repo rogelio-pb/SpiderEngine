@@ -31,8 +31,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="..\bin\Shaders\Triangle.hlsl">
+    <None Include="..\bin\Shaders\Triangle.hlsl">
       <Filter>Archivos de recursos</Filter>
-    </FxCompile>
+    </None>
   </ItemGroup>
 </Project>
