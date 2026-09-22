@@ -34,5 +34,8 @@
     <None Include="..\bin\Shaders\Triangle.hlsl">
       <Filter>Archivos de recursos</Filter>
     </None>
+    <None Include="..\Shaders\Cube.hlsl">
+      <Filter>Archivos de recursos</Filter>
+    </None>
   </ItemGroup>
 </Project>
