@@ -12,8 +12,21 @@
 #include <new>
 
 // MACROS
+/**
+ * @brief Libera un recurso de DirectX y pone el puntero en nullptr
+ * Primero comprueba que el recurso exista, lo libera y después
+ * deja el puntero vacío para evitar usarlo por accidente
+ */
 #define SAFE_RELEASE(x) if(x != nullptr) x->Release(); x = nullptr;
 
+ /**
+  * @brief Muestra un mensaje en la consola de depuración
+  * Se utiliza principalmente para saber cuando se crea un recurso
+  * y poder revisar que est pasando dentro del motor
+  * @param classObj Nombre de la clase
+  * @param method Nombre del meetodo
+  * @param state Mensaje que indica el estado de la creacion
+  */
 #define MESSAGE( classObj, method, state )   \
 {                                            \
    std::wostringstream os_;                  \
@@ -21,6 +34,12 @@
    OutputDebugStringW( os_.str().c_str() );  \
 }
 
+  /**
+   * @brief Muestra un mensaje de error en la consola de depuracion
+   * Se utiliza para saber en qué clase y mtodo ocurrio un error
+   * y mostrar un mensaje que ayude a encontrar el problema
+
+   */
 #define ERROR(classObj, method, errorMSG)                     \
 {                                                             \
     try {                                                     \
@@ -33,6 +52,14 @@
     }                                                         \
 }
 
+   /**
+    * @brief Libera de forma segura un recurso
+    * Si el objeto existe, llama a Release() para liberar el recurso
+    * y después pone el puntero en nullptr
+    * @tparam T Tipo del recurso que queremos liberar
+    * @param object Recurso que se quiere liberar
+    */
+
 template<typename T>
 void SafeRelease(T * &object) noexcept
 {
@@ -43,7 +70,15 @@ void SafeRelease(T * &object) noexcept
     }
 }
 
+/**
+ * @brief Guarda todos los datos internos que necesita el motor
+ * implementation contiene las cosas que Engine necesita para
+ * trabajar internamente, pero que no necesitamos mostrar
+ * directamente en Engine.h
+ */
 struct 
+
+//Representa un vertise que se puede dibujar, guarda el color y su posicion
 Engine::Implementation 
 {
     struct Vertex
@@ -52,36 +87,78 @@ Engine::Implementation
         float color[4];
     };
 
+    /**
+     * @brief Guarda la información necesaria para transformar
+     * los objetos que se van a dibujar.
+     * El alignas se utiliza porque DirectX necesita que
+     * esta información esté acomodada correctamente en memoria.
+     */
     struct alignas(16) TransformBuffer
     {
         DirectX::XMFLOAT4X4 worldViewProjection;
     };
 
+    //Ventana donde se mostrara la figura
     HWND window = nullptr;
 
+    //Es el ancho de la ventana
     std::uint32_t width = 0;
+
+    //Es el alto de la ventana
     std::int32_t height = 0;
 
+    //SSe encarga de crear y administrar recursos de DirectX
     ID3D11Device* device = nullptr;
+
+    //Se encarga de ejecutar las instrucciones de dibujo
     ID3D11DeviceContext* context = nullptr;
+
+    //Se encarga de mostrar en pantalla los cuadros que genera el motor
     IDXGISwapChain* swapChain = nullptr;
+
+    // Representa la imagen donde se dibuja el resultado final
     ID3D11RenderTargetView* renderTarget = nullptr;
+
+    //Guarda la información de profundidad de los objetos
     ID3D11Texture2D* depthStencilBuffer = nullptr;
+
+    //Permite utilizar la información de profundidad  al momento de dibujar
     ID3D11DepthStencilView* depthStencilView = nullptr;
 
+    //Buffers***
+
+    //Guarda los vertices que se van a dibujar
     ID3D11Buffer* vertexBuffer = nullptr;
+    //Guarda el orden en que se utilizan los vrtices
     ID3D11Buffer* indexBuffer = nullptr;
+    //Guarda información para transformar los objetos antes de dibujarlos
     ID3D11Buffer* transformBuffer = nullptr;
 
+    //Guarda la configuración utilizada para decidir como se dibujaran las caras
     ID3D11RasterizerState* rasterizerState = nullptr;
 
+    //Guarda cuando inicio el motor
     std::chrono::steady_clock::time_point startTime{};
 
+    //Shader que se encarga de procesar los vertices
     ID3D11VertexShader* vertexShader = nullptr;
+    //Shader que se encarga de definir el resultado de como se ven los pixeles
     ID3D11PixelShader* pixelShader = nullptr;
+    //Indica a DirectX cómo están organizados los datos de los vertices
     ID3D11InputLayout* inputLayout = nullptr;
   
 
+    /**
+    * @brief Compila un shader desde un archivo
+    * Busca el shader en el archivo indicado y lo convierte
+    * a una forma que DirectX pueda utilizar
+    * @param filename Archivo donde se encuentra el shader
+    * @param entryPoint Punto donde comienza el shader
+    * @param shaderModel Versión del shader que se utilizara
+    * @param shaderBlod Lugar donde se guardará el shader compilado
+    * @return true si el shader se compiló correctamente,
+    *         false si ocurrió algún error
+    */
     static bool 
         CompileShader(const wchar_t* filename, const char* entryPoint,
             const char* shaderModel, ID3DBlob** shaderBlod) noexcept {
@@ -91,8 +168,13 @@ Engine::Implementation
 
         *shaderBlod = nullptr;
 
-        UINT compileFlags = D3DCOMPILE_ENABLE_STRICTNESS;
+        UINT compileFlags = D3DCOMPILE_ENABLE_STRICTNESS; 
 
+/**
+* @brief Configuraciones utilizadas al compilar el shader.
+* En Debug se agregan opciones para poder encontrar errores
+* más fácilment en Release se activa la optimizacioon
+*/
 #ifdef _DEBUG
         compileFlags |= D3DCOMPILE_DEBUG;
         compileFlags |= D3DCOMPILE_SKIP_OPTIMIZATION;
@@ -101,6 +183,10 @@ Engine::Implementation
 #endif
 
         ID3DBlob* errors = nullptr;
+
+        /**
+        * @brief Intenta compilar el shader
+        */
         const HRESULT result = D3DCompileFromFile(
             filename,
             nullptr,
@@ -113,6 +199,10 @@ Engine::Implementation
             &errors
         );
 
+        /**
+        * @brief Si hubo errores o mensajes durante la compilación,
+        * los mostramos en la ventana de depuración.
+        */
         if (errors)
         {
             OutputDebugStringA(
@@ -123,6 +213,10 @@ Engine::Implementation
             SafeRelease(errors);
         }
         
+        /**
+        * @brief Si la compilación falló, liberamos el shader
+        * y avisamos que no se pudo crear.
+        */
         if (FAILED(result))
         {
             SafeRelease(*shaderBlod);
@@ -131,6 +225,11 @@ Engine::Implementation
         return true;
     }
 
+    /**
+    * @brief Libera todos los recursos utilizados por el motor
+    * Se llama cuando vamos a cerrar el motor para asegurarnos
+    * de que DirectX libere correctamente todo lo que utilizamos
+    */
     void ReleaseResources() noexcept
     {
         if (context)
@@ -138,6 +237,7 @@ Engine::Implementation
             context->ClearState();
             context->Flush();
     }
+        //Se liberan los recursos
         SafeRelease(rasterizerState);
         SafeRelease(transformBuffer);
         SafeRelease(indexBuffer);
@@ -155,12 +255,18 @@ Engine::Implementation
         SafeRelease(context);
         SafeRelease(device);
 
+        //Regresa todo a su estado inicial
         window = nullptr;
         width = 0;
         height = 0;
     }
 };
 
+/**
+ * @brief Crea el motor y prepara su implementación interna
+ * new (std::nothrow) intenta crear la memoria sin lanzar una
+ * excepcion si no hay suficiente memoria
+ */
 Engine::Engine() noexcept
     :m_implementation(
         new (std::nothrow) Implementation{}
@@ -168,6 +274,7 @@ Engine::Engine() noexcept
 {
 }
 
+//Destructor del motor que libera los recursos
 Engine::~Engine() noexcept
 {
     Shutdown();
@@ -176,6 +283,15 @@ Engine::~Engine() noexcept
     m_implementation = nullptr;
 }
 
+/**
+ * @brief inicia el motor y prepara todo lo necesario para
+ * comenzar a utilizarlo
+ * @param nativeWindow Ventana donde se mostrar el motor
+ * @param width Ancho de la ventana
+ * @param height Alto de la ventana
+ * @return truee si la inicializacionmn puede continuar,
+ *false si falta algún dato necesario
+ */
 bool Engine::Initialize(
     void* nativeWindow,
     std::uint32_t width,
@@ -183,6 +299,11 @@ bool Engine::Initialize(
 
 ) noexcept
 {
+    /**
+   * @brief Comprobamos que tengamos la implementacion,
+   * la ventana y dimensiones validas
+   * si algo falta, no podemos iniciar correctamente el motor
+   */
     if (!m_implementation ||
         !nativeWindow ||
         width == 0 ||
@@ -190,7 +311,6 @@ bool Engine::Initialize(
     {
         return false;
     }
-
 	Implementation& engine = *m_implementation;
 
     engine.ReleaseResources();
@@ -269,7 +389,8 @@ bool Engine::Initialize(
 
     if(FAILED(result))
     {
-        ERROR("Engine", "Initialize", ("Failed to get swap chain buffer" + std::to_string(result)).c_str());
+        ERROR("Engine", "Initialize", ("Failed to get swap chain buffer"
+              + std::to_string(result)).c_str());
         engine.ReleaseResources();
         return false;
     }
@@ -397,8 +518,10 @@ bool Engine::Initialize(
     }
 
     constexpr D3D11_INPUT_ELEMENT_DESC inputElements[]{
-        {"Position", 0, DXGI_FORMAT_R32G32B32_FLOAT,0, static_cast<UINT>(offsetof(Implementation::Vertex, position)), D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"Color", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, static_cast<UINT>(offsetof(Implementation::Vertex, color)), D3D11_INPUT_PER_VERTEX_DATA, 0}
+        {"Position", 0, DXGI_FORMAT_R32G32B32_FLOAT,0, static_cast<UINT>
+        (offsetof(Implementation::Vertex, position)), D3D11_INPUT_PER_VERTEX_DATA, 0},
+        {"Color", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, static_cast<UINT>
+        (offsetof(Implementation::Vertex, color)), D3D11_INPUT_PER_VERTEX_DATA, 0}
     };
 
     result = engine.device->CreateInputLayout(
@@ -418,6 +541,7 @@ bool Engine::Initialize(
 		return false;
 	}
 
+    //******************
     constexpr Implementation::Vertex vertices[]
     {
         // Frente
@@ -523,7 +647,8 @@ bool Engine::Initialize(
     D3D11_SUBRESOURCE_DATA indexData{};
     indexData.pSysMem = indices;
 
-    result = engine.device->CreateBuffer(&indexBufferDescription,&indexData,&engine.indexBuffer);
+    result = engine.device->CreateBuffer
+    (&indexBufferDescription,&indexData,&engine.indexBuffer);
 
     if (FAILED(result))
     {
@@ -539,7 +664,8 @@ bool Engine::Initialize(
     transformBufferDescription.Usage = D3D11_USAGE_DEFAULT;
     transformBufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
-    result = engine.device->CreateBuffer(&transformBufferDescription, nullptr, &engine.transformBuffer);
+    result = engine.device->CreateBuffer
+    (&transformBufferDescription, nullptr, &engine.transformBuffer);
 
     if (FAILED(result))
     {
@@ -552,7 +678,8 @@ bool Engine::Initialize(
     rasterizerDescription.CullMode = D3D11_CULL_NONE;
     rasterizerDescription.DepthClipEnable = TRUE;
 
-    result = engine.device->CreateRasterizerState(&rasterizerDescription, &engine.rasterizerState);
+    result = engine.device->CreateRasterizerState
+    (&rasterizerDescription, &engine.rasterizerState);
 
     if (FAILED(result))
     {
@@ -624,7 +751,7 @@ void Engine::Render() noexcept
     using namespace DirectX;
 
     const XMMATRIX world =
-        XMMatrixRotationX(elapsedSeconds * 0.4f) * XMMatrixRotationY(elapsedSeconds * 0.8f);
+     XMMatrixRotationX(elapsedSeconds * 0.4f) * XMMatrixRotationY(elapsedSeconds * 0.8f);
 
     const XMVECTOR cameraPosition = XMVectorSet(0.0f, 2.0f, -5.0f, 1.0f);
 

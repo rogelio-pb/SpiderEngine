@@ -192,6 +192,7 @@
   <ItemGroup>
     <ClInclude Include="include\Engine\API.h" />
     <ClInclude Include="include\Engine\Engine.h" />
+    <ClInclude Include="include\Engine\Prerequisites.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParties\DirectXTK\DirectXTK_Desktop_2022.vcxproj">
