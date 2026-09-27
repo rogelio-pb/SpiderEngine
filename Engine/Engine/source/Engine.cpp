@@ -311,6 +311,12 @@ bool Engine::Initialize(
     {
         return false;
     }
+
+    /**
+    * @brief Obtenemos una referencia a la implementación interna del motor
+    * Esto nos permite trabajar ms facilmente con los recursos que
+    * estan dentro de m_implementation
+    */
 	Implementation& engine = *m_implementation;
 
     engine.ReleaseResources();
@@ -320,6 +326,12 @@ bool Engine::Initialize(
     engine.height = height;
     DXGI_SWAP_CHAIN_DESC swapChainDescription{};
 
+    /**
+    * @brief Configuración de la ventana que utilizara DirectX
+    * Aqui indicamos cosas como el tamaño de la ventana, el formato
+    * de los colores, la cantidad de imágenes que se utilizarán
+    * y si la ventana se mostrara en modo ventana
+    */
     swapChainDescription.BufferCount = 2;
     swapChainDescription.BufferDesc.Width = engine.width;
     swapChainDescription.BufferDesc.Height = engine.height;
@@ -333,12 +345,26 @@ bool Engine::Initialize(
 	swapChainDescription.Windowed = TRUE;
     swapChainDescription.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 
+    /**
+    * @brief Indica la versión mínima de DirectX que queremos utilizar
+    * En este caso utilizamos DirectX 11
+    */
     constexpr D3D_FEATURE_LEVEL featureLevels[]{
         D3D_FEATURE_LEVEL_11_0
     };
     
+    /**
+    * @brief Aquí se guardara la version de DirectX que realmente
+    * pudo utilizar el dispositivo
+    */
 	D3D_FEATURE_LEVEL selectedFeatureLevel{};
 
+    /**
+    * @brief Crea los recursos principales de DirectX.
+    * Aqui se crean el dispositivo, el contexto y el Swap Chain,
+    * que son necesarios para poder comenzar a dibujar
+    * primero intentamos utilizar la tarjeta grafica del equipo.
+    */
     HRESULT result = D3D11CreateDeviceAndSwapChain(
         nullptr,
         D3D_DRIVER_TYPE_HARDWARE,
@@ -354,6 +380,12 @@ bool Engine::Initialize(
         &engine.context
     );
 
+    /**
+    * @brief Si no se pudo crear DirectX utilizando la tarjeta grafica,
+    *liberamos lo que se haya creado e intentamos utilizar WAP
+    * WARP permite que DirectX utilice el procesador para realizar
+    * el trabajo de graficos cuando no se puede utilizar la GPU
+    */
     if (FAILED(result))
     {
         SafeRelease(engine.swapChain);
@@ -375,18 +407,25 @@ bool Engine::Initialize(
             &engine.context
         );
     }
+
+    //Si no se puede crear DirectX con WARP, se detiene la inicializacin
     if (FAILED(result))
     {
         engine.ReleaseResources();
         return false;
     }
+
+    //Guara la imagen que se esta mostrando
 	ID3D11Texture2D* backBuffer = nullptr;
+
+    //Aqui es basicamente la imagen donde DirectX prepara lo que se vera en la vntana
     result = engine.swapChain->GetBuffer(
         0,
         __uuidof(ID3D11Texture2D),
         reinterpret_cast<void**>(&backBuffer)
     );
 
+    //Si no se puede obtener el Back Buffer, no podemos continuar
     if(FAILED(result))
     {
         ERROR("Engine", "Initialize", ("Failed to get swap chain buffer"
@@ -394,6 +433,12 @@ bool Engine::Initialize(
         engine.ReleaseResources();
         return false;
     }
+
+    /**
+    * @brief Crea el Render Target View utilizando el Back Buffer
+    * Esto permite que DirectX pueda utilizar el Back Buffer
+    * como lugar donde se dibujara la imagen final
+    */
     result = engine.device->CreateRenderTargetView(
         backBuffer,
         nullptr,
@@ -407,6 +452,11 @@ bool Engine::Initialize(
         return false;
     }
 
+    /**
+    * @brief Configuracion del buffer de profundidad
+    * Este buffer ayuda a DirectX a saber que objetos estan
+    * delante o detras de otros objetos al momento de dibujar
+    */
     D3D11_TEXTURE2D_DESC depthBufferDescription{};  
     depthBufferDescription.Width = engine.width;
     depthBufferDescription.Height = engine.height;
@@ -446,7 +496,11 @@ bool Engine::Initialize(
         return false;
     }
 
-
+    /**
+    * @brief Configuración del area donde DirectX va a dibujar
+    * El viewport indica que parte de la ventana utilizara DirectX
+    * para mostrar el resultado.
+    */
     D3D11_VIEWPORT viewport{};
 
     viewport.TopLeftX = 0.0f;
@@ -460,14 +514,18 @@ bool Engine::Initialize(
     viewport.MinDepth = 0.0f;
     viewport.MaxDepth = 1.0f;
 
+    //Aqui le manda a DirectX que viewport debe usar
     engine.context->RSSetViewports(
         1,
         &viewport
     );
 
+    //Se guarda wl codigo compilado de los shaders
     ID3DBlob* vertexShaderBlob = nullptr;
     ID3DBlob* pixelShaderBlob = nullptr;
 
+
+    //Busca VSMain dentro de Cube.hlsl y lo compila
     if (!Implementation::CompileShader(
         L"shaders\\Cube.hlsl",
         "VSMain",
@@ -478,6 +536,7 @@ bool Engine::Initialize(
         return false;
     }
 
+    //Busca PSMain dentro del cube.hlsl y lo compila
     if (!Implementation::CompileShader(
         L"shaders\\Cube.hlsl",
         "PSMain",
@@ -488,6 +547,8 @@ bool Engine::Initialize(
         engine.ReleaseResources();
         return false;
     }
+
+    //Crea el Vertex shader´para directX
     result = engine.device->CreateVertexShader(
         vertexShaderBlob->GetBufferPointer(),
         vertexShaderBlob->GetBufferSize(),
@@ -495,6 +556,7 @@ bool Engine::Initialize(
         &engine.vertexShader
     );
 
+    //Si no se pudo cear el Vertex, liberamos os recursos y detenemos el programa
     if (FAILED(result))
     {
         SafeRelease(pixelShaderBlob);
@@ -502,6 +564,8 @@ bool Engine::Initialize(
 		engine.ReleaseResources();
         return false;
     }
+
+    //Crea el pixel Shader que usara DirectX
     result = engine.device->CreatePixelShader(
         pixelShaderBlob->GetBufferPointer(),
         pixelShaderBlob->GetBufferSize(),
@@ -509,6 +573,7 @@ bool Engine::Initialize(
         &engine.pixelShader
     );
     
+    //Si no se puede crear el Pixxel Shader, se detiene el programa
     if (FAILED(result))
     {
 		SafeRelease(pixelShaderBlob);
@@ -517,6 +582,14 @@ bool Engine::Initialize(
         return false;
     }
 
+    /**
+    * @brief Describe cómo están organizados los datos de cada vrtice
+    * Le indicamos a DirectX que cada vértice tiene:
+    * una posición con 3 vaolores
+    * un color con 4 valores
+    * Estos nombres deben coincidir con los datos que recibe
+    * el Vertex Shader
+    */
     constexpr D3D11_INPUT_ELEMENT_DESC inputElements[]{
         {"Position", 0, DXGI_FORMAT_R32G32B32_FLOAT,0, static_cast<UINT>
         (offsetof(Implementation::Vertex, position)), D3D11_INPUT_PER_VERTEX_DATA, 0},
@@ -524,6 +597,7 @@ bool Engine::Initialize(
         (offsetof(Implementation::Vertex, color)), D3D11_INPUT_PER_VERTEX_DATA, 0}
     };
 
+    //Aqui se crea el Input Layout
     result = engine.device->CreateInputLayout(
         inputElements,
         ARRAYSIZE(inputElements),
@@ -535,13 +609,18 @@ bool Engine::Initialize(
     SafeRelease(pixelShaderBlob);
     SafeRelease(vertexShaderBlob);
 
+    //Si no se puede crear el Input Layout, se detiene el programa
 	if (FAILED(result))
 	{
 		engine.ReleaseResources();
 		return false;
 	}
 
-    //******************
+
+    /**
+    * @brief Define los vertices que forman el cubo
+    * Los vertices se utilizan despues para construir las caras del cubo
+    */
     constexpr Implementation::Vertex vertices[]
     {
         // Frente
@@ -581,6 +660,11 @@ bool Engine::Initialize(
         }
     };
 
+    /**
+    * @brief Configuracion del buffer de vertices
+    * Aqui indicamos a DirectX cuanto espacio necesita el buffer
+    * y que sera utilizado para guardar los vrtices
+    */
     D3D11_BUFFER_DESC vertexBufferDescription{};
     
     vertexBufferDescription.ByteWidth =
@@ -596,21 +680,28 @@ bool Engine::Initialize(
     vertexBufferDescription.MiscFlags = 0;
     vertexBufferDescription.StructureByteStride = 0;
 
+
+    //Indica los datos iniciales del buffer
     D3D11_SUBRESOURCE_DATA initialVertexData{};
     initialVertexData.pSysMem = vertices;
 
+    //Crea el buffer que almacenara los vertices
     result = engine.device->CreateBuffer(
         &vertexBufferDescription,
         &initialVertexData,
         &engine.vertexBuffer
     );
 
+    //Si no se puede crear el buffer se detiene el programa
     if (FAILED(result))
     {
         engine.ReleaseResources();
         return false;
     }
 
+    /**
+    * @brief Define el orden en que se utilizan los vertices
+    */
     constexpr std::uint16_t indices[]
     {
         // Frente
@@ -638,24 +729,39 @@ bool Engine::Initialize(
         3, 6, 7
     };
 
+    /**
+    * @brief Configuracin del buffr de indices
+    * Este buffer le dice a DirectX en que orden debe utilizar
+    * los vertices para formar los triangulos
+    */
     D3D11_BUFFER_DESC indexBufferDescription{};
     
     indexBufferDescription.ByteWidth = static_cast<UINT>(sizeof(indices));
     indexBufferDescription.Usage = D3D11_USAGE_IMMUTABLE;
     indexBufferDescription.BindFlags = D3D11_BIND_INDEX_BUFFER;
 
+    //Inidica los datos iniciales del buffer de indices
     D3D11_SUBRESOURCE_DATA indexData{};
     indexData.pSysMem = indices;
 
+    //crea el buffer de los indices
     result = engine.device->CreateBuffer
     (&indexBufferDescription,&indexData,&engine.indexBuffer);
 
+
+    //Si no se crea el buffer, se detiene el programa
     if (FAILED(result))
     {
         engine.ReleaseResources();
         return false;
     }
 
+
+    /**
+    * @brief Configuracion del buffer que guarda las transformaciones
+    * este buffer se utilizara para pasarle al shader la informacion
+    * necesaria para colocar y mostrar el cubo correctamente
+    */
     D3D11_BUFFER_DESC transformBufferDescription{};
 
     transformBufferDescription.ByteWidth =
@@ -664,41 +770,68 @@ bool Engine::Initialize(
     transformBufferDescription.Usage = D3D11_USAGE_DEFAULT;
     transformBufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 
+
+    //Crea el buffer de transformacion
     result = engine.device->CreateBuffer
     (&transformBufferDescription, nullptr, &engine.transformBuffer);
 
+    //Si no se pudo crear el buffer, detenmos la inicializacion
     if (FAILED(result))
     {
         engine.ReleaseResources();
         return false;
     }
 
+    /**
+    * @brief Configura cómo se van a dibujar los objetos
+    * FillMode = SOLID hace que las caras se dibujen completas
+    * CullMode = NONE hace que no se eliminen las caras según
+    * su dirección, por lo que podemos ver ambos lados
+    * DepthClipEnable activa el recorte usando la profundidad
+    */
     D3D11_RASTERIZER_DESC rasterizerDescription{};
     rasterizerDescription.FillMode = D3D11_FILL_SOLID;
     rasterizerDescription.CullMode = D3D11_CULL_NONE;
     rasterizerDescription.DepthClipEnable = TRUE;
 
+    //crea el estado que utilizara DirectX para rasterizar
     result = engine.device->CreateRasterizerState
     (&rasterizerDescription, &engine.rasterizerState);
 
+    //Si no se puede crear, se detiene el programa
     if (FAILED(result))
     {
         engine.ReleaseResources();
         return false;
     }
 
+    //Guarda el tiempo en que inicia y se usa despues para hacer girar el cubo
     engine.startTime = std::chrono::steady_clock::now();
 
     return true;
 }
 
+
+/**
+ * @brief Dibuja un cuadro del motor
+ * Esta funcin prepara la escena, actualiza la posicion del cubo,
+ * configura los recursos necesarios y finalmente lo dibja
+ * en la ventana
+ */
 void Engine::Render() noexcept
 {
+    //Comprobamos que existe la implementacion del motor
     if (!m_implementation)
         return;
 
+    //Obtenemos una referencia a la implementacion
     Implementation& engine = *m_implementation;
 
+    /**
+    * @brief Comprobamos que todos los recursos necesarios
+    *para dibujar existan
+    * Si alguno falta simplemente no intentamos renderizar
+    */
     if (!engine.context ||
         !engine.swapChain ||
         !engine.renderTarget ||
@@ -712,6 +845,7 @@ void Engine::Render() noexcept
         return;
     }
 
+    //Color utilizado para limpiar la pantalla antes de dibujr el siguiente cuadro
     constexpr float clearColor[]
     {
         0.03f,
@@ -720,17 +854,20 @@ void Engine::Render() noexcept
         1.0f
     };
 
+    //Indica donde se va a dibujar el resultado
     engine.context->OMSetRenderTargets(
         1,
         &engine.renderTarget,
         engine.depthStencilView
     );
 
+    //Limpia la imagen anterior
     engine.context->ClearRenderTargetView(
         engine.renderTarget,
         clearColor
     );
 
+    //Limpia la informacion anteriror
     engine.context->ClearDepthStencilView(
         engine.depthStencilView,
         D3D11_CLEAR_DEPTH |
@@ -739,10 +876,11 @@ void Engine::Render() noexcept
         0
     );
 
-
+    //Obtiene el tiempo actual
     const auto currentTime =
         std::chrono::steady_clock::now();
 
+    //Clacula cuanto tiempo a pasado desde que inicio el motor
     const float elapsedSeconds =
         std::chrono::duration<float>(
             currentTime - engine.startTime
@@ -750,21 +888,28 @@ void Engine::Render() noexcept
 
     using namespace DirectX;
 
+    //Crea la transformacion del cubo y este gira en los ejes X y Y
     const XMMATRIX world =
      XMMatrixRotationX(elapsedSeconds * 0.4f) * XMMatrixRotationY(elapsedSeconds * 0.8f);
 
+    //Define la posicion de la camara
     const XMVECTOR cameraPosition = XMVectorSet(0.0f, 2.0f, -5.0f, 1.0f);
 
+    //Define el punto al que mira la camara
     const XMVECTOR cameraTarget = XMVectorSet(0.0f, 0.0f, 0.0f, 1.0f);
 
+    //Define que direccion representa arriba para la camara
     const XMVECTOR cameraUp = XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f);
 
+    //Posicion y direccion de la camara
     const XMMATRIX view = XMMatrixLookAtLH(cameraPosition, cameraTarget, cameraUp);
 
+    //Calcula la relacion entre el ancho y el alto de la ventana
     const float aspectRatio =
         static_cast<float>(engine.width) /
         static_cast<float>(engine.height);
 
+    //Cre la matriz en perspectiva y hace que se vea 3D
     const XMMATRIX projection =
         XMMatrixPerspectiveFovLH(
             XM_PIDIV4,
@@ -773,8 +918,10 @@ void Engine::Render() noexcept
             100.0f
         );
 
+    //Guarda las transformaciones que se enviaran al sahder
     Implementation::TransformBuffer transform{};
 
+    //Combina las transforms del objeto, su camara y la perspectiva
     XMStoreFloat4x4(
         &transform.worldViewProjection,
         XMMatrixTranspose(
@@ -782,15 +929,18 @@ void Engine::Render() noexcept
         )
     );
 
+    //Envia la informacion de transformacion al GPU
     engine.context->UpdateSubresource(
         engine.transformBuffer, 0, nullptr, &transform, 0, 0
     );
 
+    //indica cuanto ocupa carda vertice
     constexpr UINT stride =
         sizeof(Implementation::Vertex);
 
     constexpr UINT offset = 0;
 
+    //Le pasamos a DirectX el buffer de vertices
     engine.context->IASetVertexBuffers(
         0,
         1,
@@ -799,59 +949,62 @@ void Engine::Render() noexcept
         &offset
     );
 
+    //Le pasamos a DirectX el buffer de indices
     engine.context->IASetIndexBuffer(
         engine.indexBuffer, DXGI_FORMAT_R16_UINT, 0
     );
 
+    //Aqui interpreta los datos de cada vertice
     engine.context->IASetInputLayout(
         engine.inputLayout
     );
 
+    // Aqui dice que como los vertices formaran al triangulo
     engine.context->IASetPrimitiveTopology(
         D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
     );
 
+    
+    //Se aplica la configuracion de rasterizacion
     engine.context->RSSetState(
         engine.rasterizerState
     );
 
+    //Aqui se le indica a DirectX que Vertex usar
     engine.context->VSSetShader(
         engine.vertexShader,
         nullptr,
         0
     );
 
+    //Le pasamos el vertex shader al buffer
     engine.context->VSSetConstantBuffers(
         0,
         1,
         &engine.transformBuffer
     );
 
+    //Le decimos a DirectX que pixeles usar
     engine.context->PSSetShader(
         engine.pixelShader,
         nullptr,
         0
     );
 
-    engine.context->PSSetShader(
-        engine.pixelShader,
-        nullptr,
-        0
-    );
-
-    engine.context->PSSetShader(
-        engine.pixelShader,
-        nullptr,
-        0
-    );
-
+    //dibuja los 36 indices para el cubo
     engine.context->DrawIndexed(36, 0, 0);
 
     engine.swapChain->Present(1, 0);
 }
 
+/**
+ * @brief Apaga el motor y libera sus recursos
+ * Se utiliza cuando el programa termina o cuando queremos
+ * cerrar el motor correctamente.
+ */
 void Engine::Shutdown() noexcept
 {
+    //Comprobamos que exista la implementacion antes de liberar recursos
     if (m_implementation)
         m_implementation->ReleaseResources();
 }
