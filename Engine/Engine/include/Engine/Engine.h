@@ -4,7 +4,7 @@
 
 /**
  * @brief Esta es la clase principal del motor
- 
+
  * Esta clase se encarga de controlar las partes principales
  * del motor, como iniciar, dibujar y cerrar el programa.
  */
@@ -41,7 +41,7 @@ public:
 		void* nativeWindow,
 		std::uint32_t width,
 		std::uint32_t height
-		) noexcept;
+	) noexcept;
 
 	//La funcion es la que se llama para renderizar
 	void Render() noexcept;

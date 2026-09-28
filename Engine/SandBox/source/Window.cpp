@@ -1,27 +1,11 @@
 #include "Window.h"
 
-/**
- * @brief Destructor de Window
- * Se asegura de destruir la ventana y liberar
- * los recursos asociados cuando el objeto deja de existir
- */
+
 Window::~Window()
 {
 	Destroy();
 }
 
-/**
- * @brief crea y configura la ventana de Windows
- * rgistra la clase de ventana, ajusta su tamaño
- * y crea la ventana utilizando la configuracinn indicada.
- * @param instance Instancia de la alpicacion
- * @param tittle Titulo que tendra la ventana
- * @param clientWidth Ancho del area interna de la ventana
- * @param clientHeight Alto del area interna de la ventan
- *
- * @return true si la ventana se creó correctamente.
- * @return false si ocurrió algún error.
- */
 bool
 Window::Create(HINSTANCE instance, const wchar_t* tittle,
 	UINT clientWidth, UINT clientHeight) noexcept {
@@ -102,109 +86,80 @@ Window::Create(HINSTANCE instance, const wchar_t* tittle,
 	return true;
 }
 
-	/**
-	* @brief Muestra la ventana en pantalla
-	* tambien actualiza la ventana para que Windows
-	* procese su primera actualización visual
-	* @param showCommand Indica cómo se debe mostrar la ventana
-	*/
-	void Window::Show(int showCommand) noexcept
+void Window::Show(int showCommand) noexcept
+{
+	if (m_handle)
 	{
-		if (m_handle)
-		{
-			ShowWindow(m_handle, showCommand);
-			UpdateWindow(m_handle);
-		}
+		ShowWindow(m_handle, showCommand);
+		UpdateWindow(m_handle);
+	}
+}
+
+void Window::Destroy() noexcept
+{
+	//verifica si existe la ventana y  la destruye
+	if (m_handle)
+	{
+		DestroyWindow(m_handle);
+		m_handle = nullptr;
 	}
 
-	/**
-	* @brief Destruye la ventana y libera sus recursos
-	* Tambien desregistra la clase de ventana cuando ya no se necesita
-	*/
-	void Window::Destroy() noexcept
+
+	if (m_classRegistered)
 	{
-		//verifica si existe la ventana y  la destruye
-		if (m_handle)
-		{
-			DestroyWindow(m_handle);
-			m_handle = nullptr;
-		}
-
-
-		if (m_classRegistered)
-		{
-			UnregisterClassW(ClassName, m_instance);
-			m_classRegistered = false;
-		}
-
-		m_instance = nullptr;
+		UnregisterClassW(ClassName, m_instance);
+		m_classRegistered = false;
 	}
 
-	/**
-	 * @brief Procesa los mensajes enviados por Windows.
-	 * Revisa si existen mensajes pendientes, como cerrar,
-	 * mover o interactuar con la ventana
-	 * @return true mientras la aplicación siga funcionando.
-	 */
-	bool Window::ProcessMessages() noexcept
+	m_instance = nullptr;
+}
+
+bool Window::ProcessMessages() noexcept
+{
+	MSG message{};
+
+	//obtiene y procesa todos los mensajes pendientes
+	while (PeekMessageW(&message, nullptr, 0, 0, PM_REMOVE))
 	{
-		MSG message{};
+		if (message.message == WM_QUIT)
+			return false;
 
-		//obtiene y procesa todos los mensajes pendientes
-		while (PeekMessageW(&message, nullptr, 0, 0, PM_REMOVE))
-		{
-			if (message.message == WM_QUIT)
-				return false;
-
-			//traduuce el mensaje antes de enviarlo al procedimeinto
-			TranslateMessage(&message);
-			//envia el mensaje al windowProdcedure
-			DispatchMessageW(&message);
-		}
-		return true;
+		//traduuce el mensaje antes de enviarlo al procedimeinto
+		TranslateMessage(&message);
+		//envia el mensaje al windowProdcedure
+		DispatchMessageW(&message);
 	}
+	return true;
+}
 
-	/**
-	* @brief comprueba si la ventana esta minimizada
-	* @return tre si la ventana esta minimizada
-	* @return false si la ventana no está minimizada
-	*/
-	bool Window::IsMinimized() const noexcept
+
+bool Window::IsMinimized() const noexcept
+{
+	return m_handle && IsIconic(m_handle);
+}
+
+LRESULT CALLBACK Window::WindowProcedure(
+	HWND handle,
+	UINT message,
+	WPARAM wParam,
+	LPARAM lParam
+)
+{
+	switch (message)
 	{
-		return m_handle && IsIconic(m_handle);
+	case WM_ERASEBKGND:
+		//DirectX limpia el back buffer.
+		return 1;
+
+
+
+	case WM_DESTROY:
+		//indica a windows que la aplicacion debe terminar
+		PostQuitMessage(0);
+		return 0;
+
+	default:
+		return DefWindowProcW(handle, message, wParam, lParam);
 	}
+}
 
-	/**
-	 * @brief procesa los mensajes recibidos por la ventana
-	 * Windows utiliza esta funcin para informaar eventos
-	 * relacionados con la ventana
-	 * @param wParam Información adicional del mensaje
-	 * @param lParam Información adicional del mensaje
-	 * @return Resultado del procesamiento del mensaje
-	 */
-	LRESULT CALLBACK Window::WindowProcedure(
-		HWND handle,
-		UINT message,
-		WPARAM wParam,
-		LPARAM lParam
-	)
-	{
-		switch (message)
-		{
-			case WM_ERASEBKGND:
-				//DirectX limpia el back buffer.
-				return 1;
-
-
-			
-			case WM_DESTROY:
-				//indica a windows que la aplicacion debe terminar
-				PostQuitMessage(0);
-				return 0;
-
-			default:
-				return DefWindowProcW(handle, message, wParam, lParam);
-		}
-	}
-	
-	

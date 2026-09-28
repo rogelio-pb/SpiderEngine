@@ -11,7 +11,8 @@ cbuffer TransformBuffer : register(b0)
 
 //Informacion que recibe el vertexShader
 //Contiene la posicion del vertice y su color
-struct VSInput
+struct
+    VSInput
 {
     float3 position : POSITION;
     float4 color : COLOR;
@@ -23,7 +24,8 @@ struct VSInput
  *aqui guardamos la nueva posicion del vertice
  * y su color.
  */
-struct PSInput
+struct
+    PSInput
 {
     float4 position : SV_POSITION;
     float4 color : COLOR;
