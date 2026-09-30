@@ -1,6 +1,6 @@
 #pragma once
 #include "API.h"
-#include <cstdint>"
+#include <cstdint>
 #include <Windows.h>
 
 /**
