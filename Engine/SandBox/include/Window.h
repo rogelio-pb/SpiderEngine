@@ -81,3 +81,5 @@ private:
 	HWND m_handle = nullptr;
 	bool m_classRegistered = false;
 };
+
+

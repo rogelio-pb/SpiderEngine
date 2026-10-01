@@ -86,8 +86,8 @@ Window::Create(HINSTANCE instance, const wchar_t* tittle,
 	return true;
 }
 
-void Window::Show(int showCommand) noexcept
-{
+void
+Window::Show(int showCommand) noexcept {
 	if (m_handle)
 	{
 		ShowWindow(m_handle, showCommand);
@@ -95,8 +95,8 @@ void Window::Show(int showCommand) noexcept
 	}
 }
 
-void Window::Destroy() noexcept
-{
+void
+Window::Destroy() noexcept {
 	//verifica si existe la ventana y  la destruye
 	if (m_handle)
 	{
@@ -114,8 +114,8 @@ void Window::Destroy() noexcept
 	m_instance = nullptr;
 }
 
-bool Window::ProcessMessages() noexcept
-{
+bool
+Window::ProcessMessages() noexcept {
 	MSG message{};
 
 	//obtiene y procesa todos los mensajes pendientes
@@ -133,8 +133,8 @@ bool Window::ProcessMessages() noexcept
 }
 
 
-bool Window::IsMinimized() const noexcept
-{
+bool
+Window::IsMinimized() const noexcept {
 	return m_handle && IsIconic(m_handle);
 }
 

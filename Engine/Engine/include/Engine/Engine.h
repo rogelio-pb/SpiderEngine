@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Prerequisites.h"
 
 /**
@@ -37,17 +36,20 @@ public:
 	 * @return true si la inicialización se realizó correctamente,
 	 * false si ocurrió algún problem
 	 */
-	bool Initialize(
+	bool 
+		Initialize(
 		void* nativeWindow,
 		std::uint32_t width,
 		std::uint32_t height
 	) noexcept;
 
 	//La funcion es la que se llama para renderizar
-	void Render() noexcept;
+	void 
+		Render() noexcept;
 
 	//Esta funcion es cuando dejamos de ejecutar, cieera y libera sus recursos
-	void Shutdown() noexcept;
+	void 
+		Shutdown() noexcept;
 
 private:
 	//Se usa para mantener los detalles internos del motor

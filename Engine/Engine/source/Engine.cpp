@@ -36,8 +36,8 @@
 
 
 template<typename T>
-void SafeRelease(T*& object) noexcept
-{
+void 
+SafeRelease(T*& object) noexcept{
 	if (object != nullptr)
 	{
 		object->Release();
@@ -136,8 +136,8 @@ struct
 	}
 
 
-	void ReleaseResources() noexcept
-	{
+	void 
+		ReleaseResources() noexcept{
 		if (context)
 		{
 			context->ClearState();
@@ -623,8 +623,8 @@ bool Engine::Initialize(
 
 
 
-void Engine::Render() noexcept
-{
+void 
+Engine::Render() noexcept{
 	//Comprobamos que existe la implementacion del motor
 	if (!m_implementation)
 		return;
@@ -776,8 +776,8 @@ void Engine::Render() noexcept
 	engine.swapChain->Present(1, 0);
 }
 
-void Engine::Shutdown() noexcept
-{
+void 
+Engine::Shutdown() noexcept{
 	//Comprobamos que exista la implementacion antes de liberar recursos
 	if (m_implementation)
 		m_implementation->ReleaseResources();
