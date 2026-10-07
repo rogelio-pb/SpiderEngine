@@ -188,11 +188,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Engine.cpp" />
+    <ClCompile Include="source\Rendering\Device.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\API.h" />
     <ClInclude Include="include\Engine\Engine.h" />
     <ClInclude Include="include\Engine\Prerequisites.h" />
+    <ClInclude Include="include\Rendering\Device.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ThirdParties\DirectXTK\DirectXTK_Desktop_2022.vcxproj">
