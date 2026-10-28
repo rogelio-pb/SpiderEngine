@@ -1,20 +1,7 @@
 #include <Engine/Engine.h>
+#include <Rendering/Device.h>
+#include <Rendering/DeviceContext.h>
 
-
-
-
-
-
-
-template<typename T>
-void 
-SafeRelease(T*& object) noexcept{
-	if (object != nullptr)
-	{
-		object->Release();
-		object = nullptr;
-	}
-}
 
 
 struct
@@ -32,12 +19,16 @@ struct
 		DirectX::XMFLOAT4X4 worldViewProjection;
 	};
 
+	
 	//Ventana donde se mostrara la figura
 	HWND window = nullptr;
 	std::uint32_t width = 0;
 	std::int32_t height = 0;
-	ID3D11Device* device = nullptr;
-	ID3D11DeviceContext* context = nullptr;
+
+	Device device;
+	DeviceContext context;
+	//ID3D11Device* device = nullptr;
+	//ID3D11DeviceContext* context = nullptr;
 	IDXGISwapChain* swapChain = nullptr;
 	ID3D11RenderTargetView* renderTarget = nullptr;
 	ID3D11Texture2D* depthStencilBuffer = nullptr;
@@ -109,11 +100,11 @@ struct
 
 	void 
 		ReleaseResources() noexcept{
-		if (context)
-		{
-			context->ClearState();
-			context->Flush();
-		}
+		//if (context)
+		//{
+		//	context->ClearState();
+		//	context->Flush();
+		//}
 		//Se liberan los recursos
 		SafeRelease(rasterizerState);
 		SafeRelease(transformBuffer);
@@ -129,8 +120,10 @@ struct
 		SafeRelease(renderTarget);
 
 		SafeRelease(swapChain);
-		SafeRelease(context);
-		SafeRelease(device);
+		//SafeRelease(context);
+		context.destroy();
+		device.destroy();
+		//SafeRelease(device);
 
 		//Regresa todo a su estado inicial
 		window = nullptr;
@@ -210,17 +203,20 @@ bool Engine::Initialize(
 		D3D11_SDK_VERSION,
 		&swapChainDescription,
 		&engine.swapChain,
-		&engine.device,
+		engine.device.getDeviceAddress(),
 		&selectedFeatureLevel,
-		&engine.context
+		//&engine.context
+		engine.context.getDeviceContextAddress()
 	);
 
 
 	if (FAILED(result))
 	{
 		SafeRelease(engine.swapChain);
-		SafeRelease(engine.context);
-		SafeRelease(engine.device);
+		//SafeRelease(engine.context);
+		engine.context.destroy();
+		engine.device.destroy();
+		//SafeRelease(engine.device);
 
 		result = D3D11CreateDeviceAndSwapChain(
 			nullptr,
@@ -232,9 +228,9 @@ bool Engine::Initialize(
 			D3D11_SDK_VERSION,
 			&swapChainDescription,
 			&engine.swapChain,
-			&engine.device,
+			engine.device.getDeviceAddress(),
 			&selectedFeatureLevel,
-			&engine.context
+			engine.context.getDeviceContextAddress()
 		);
 	}
 
@@ -263,7 +259,7 @@ bool Engine::Initialize(
 		return false;
 	}
 
-	result = engine.device->CreateRenderTargetView(
+	result = engine.device.CreateRenderTargetView(
 		backBuffer,
 		nullptr,
 		&engine.renderTarget
@@ -291,7 +287,7 @@ bool Engine::Initialize(
 	depthBufferDescription.BindFlags =
 		D3D11_BIND_DEPTH_STENCIL;
 
-	result = engine.device->CreateTexture2D(
+	result = engine.device.CreateTexture2D(
 		&depthBufferDescription,
 		nullptr,
 		&engine.depthStencilBuffer
@@ -303,7 +299,7 @@ bool Engine::Initialize(
 		return false;
 	}
 
-	result = engine.device->CreateDepthStencilView(
+	result = engine.device.CreateDepthStencilView(
 		engine.depthStencilBuffer,
 		nullptr,
 		&engine.depthStencilView
@@ -329,7 +325,7 @@ bool Engine::Initialize(
 	viewport.MaxDepth = 1.0f;
 
 	//Aqui le manda a DirectX que viewport debe usar
-	engine.context->RSSetViewports(
+	engine.context.RSSetViewports(
 		1,
 		&viewport
 	);
@@ -363,7 +359,7 @@ bool Engine::Initialize(
 	}
 
 	//Crea el Vertex shader´para directX
-	result = engine.device->CreateVertexShader(
+	result = engine.device.CreateVertexShader(
 		vertexShaderBlob->GetBufferPointer(),
 		vertexShaderBlob->GetBufferSize(),
 		nullptr,
@@ -379,7 +375,7 @@ bool Engine::Initialize(
 	}
 
 	//Crea el pixel Shader que usara DirectX
-	result = engine.device->CreatePixelShader(
+	result = engine.device.CreatePixelShader(
 		pixelShaderBlob->GetBufferPointer(),
 		pixelShaderBlob->GetBufferSize(),
 		nullptr,
@@ -403,7 +399,7 @@ bool Engine::Initialize(
 	};
 
 	//Aqui se crea el Input Layout
-	result = engine.device->CreateInputLayout(
+	result = engine.device.CreateInputLayout(
 		inputElements,
 		ARRAYSIZE(inputElements),
 		vertexShaderBlob->GetBufferPointer(),
@@ -483,7 +479,7 @@ bool Engine::Initialize(
 	initialVertexData.pSysMem = vertices;
 
 	//Crea el buffer que almacenara los vertices
-	result = engine.device->CreateBuffer(
+	result = engine.device.CreateBuffer(
 		&vertexBufferDescription,
 		&initialVertexData,
 		&engine.vertexBuffer
@@ -537,7 +533,7 @@ bool Engine::Initialize(
 	indexData.pSysMem = indices;
 
 	//crea el buffer de los indices
-	result = engine.device->CreateBuffer
+	result = engine.device.CreateBuffer
 	(&indexBufferDescription, &indexData, &engine.indexBuffer);
 
 
@@ -559,7 +555,7 @@ bool Engine::Initialize(
 
 
 	//Crea el buffer de transformacion
-	result = engine.device->CreateBuffer
+	result = engine.device.CreateBuffer
 	(&transformBufferDescription, nullptr, &engine.transformBuffer);
 
 	//Si no se pudo crear el buffer, detenmos la inicializacion
@@ -576,7 +572,7 @@ bool Engine::Initialize(
 	rasterizerDescription.DepthClipEnable = TRUE;
 
 	//crea el estado que utilizara DirectX para rasterizar
-	result = engine.device->CreateRasterizerState
+	result = engine.device.CreateRasterizerState
 	(&rasterizerDescription, &engine.rasterizerState);
 
 	//Si no se puede crear, se detiene el programa
@@ -604,8 +600,7 @@ Engine::Render() noexcept{
 	Implementation& engine = *m_implementation;
 
 
-	if (!engine.context ||
-		!engine.swapChain ||
+	if (!engine.swapChain ||
 		!engine.renderTarget ||
 		!engine.vertexBuffer ||
 		!engine.indexBuffer ||
@@ -627,20 +622,20 @@ Engine::Render() noexcept{
 	};
 
 	//Indica donde se va a dibujar el resultado
-	engine.context->OMSetRenderTargets(
+	engine.context.OMSetRenderTargets(
 		1,
 		&engine.renderTarget,
 		engine.depthStencilView
 	);
 
 	//Limpia la imagen anterior
-	engine.context->ClearRenderTargetView(
+	engine.context.ClearRenderTargetView(
 		engine.renderTarget,
 		clearColor
 	);
 
 	//Limpia la informacion anteriror
-	engine.context->ClearDepthStencilView(
+	engine.context.ClearDepthStencilView(
 		engine.depthStencilView,
 		D3D11_CLEAR_DEPTH |
 		D3D11_CLEAR_STENCIL,
@@ -689,7 +684,7 @@ Engine::Render() noexcept{
 		)
 	);
 
-	engine.context->UpdateSubresource(
+	engine.context.UpdateSubresource(
 		engine.transformBuffer, 0, nullptr, &transform, 0, 0
 	);
 
@@ -698,7 +693,7 @@ Engine::Render() noexcept{
 
 	constexpr UINT offset = 0;
 
-	engine.context->IASetVertexBuffers(
+	engine.context.IASetVertexBuffers(
 		0,
 		1,
 		&engine.vertexBuffer,
@@ -707,42 +702,42 @@ Engine::Render() noexcept{
 	);
 
 	//Le pasamos a DirectX el buffer de indices
-	engine.context->IASetIndexBuffer(
+	engine.context.IASetIndexBuffer(
 		engine.indexBuffer, DXGI_FORMAT_R16_UINT, 0
 	);
 
-	engine.context->IASetInputLayout(
+	engine.context.IASetInputLayout(
 		engine.inputLayout
 	);
 
-	engine.context->IASetPrimitiveTopology(
+	engine.context.IASetPrimitiveTopology(
 		D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST
 	);
 
-	engine.context->RSSetState(
+	engine.context.RSSetState(
 		engine.rasterizerState
 	);
 
-	engine.context->VSSetShader(
+	engine.context.VSSetShader(
 		engine.vertexShader,
 		nullptr,
 		0
 	);
 
-	engine.context->VSSetConstantBuffers(
+	engine.context.VSSetConstantBuffers(
 		0,
 		1,
 		&engine.transformBuffer
 	);
 
-	engine.context->PSSetShader(
+	engine.context.PSSetShader(
 		engine.pixelShader,
 		nullptr,
 		0
 	);
 
 	//dibuja los 36 indices para el cubo
-	engine.context->DrawIndexed(36, 0, 0);
+	engine.context.DrawIndexed(36, 0, 0);
 
 	engine.swapChain->Present(1, 0);
 }

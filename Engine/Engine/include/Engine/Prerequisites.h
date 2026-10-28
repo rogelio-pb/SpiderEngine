@@ -31,6 +31,16 @@
         OutputDebugStringW(L"Failed to log error message.\n");\
     }                                                         \
 }
+
+template<typename T>
+void
+SafeRelease(T * &object) noexcept {
+	if (object != nullptr)
+	{
+		object->Release();
+		object = nullptr;
+	}
+}
 /**
  * @brief Funciones principales que forman parte de la API del Engine
  * Estas funciones permiten que codigo externo pueda

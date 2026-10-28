@@ -30,6 +30,9 @@
     <ClCompile Include="source\Rendering\Device.cpp">
       <Filter>Archivos de origen\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="source\Rendering\DeviceContext.cpp">
+      <Filter>Archivos de origen\Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Engine\API.h">
@@ -42,6 +45,9 @@
       <Filter>Archivos de encabezado\Engine</Filter>
     </ClInclude>
     <ClInclude Include="include\Rendering\Device.h">
+      <Filter>Archivos de encabezado\Rendering</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Rendering\DeviceContext.h">
       <Filter>Archivos de encabezado\Rendering</Filter>
     </ClInclude>
   </ItemGroup>
