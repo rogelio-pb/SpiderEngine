@@ -47,7 +47,7 @@ Window::Create(HINSTANCE instance, const wchar_t* tittle,
 		0,
 		0,
 		static_cast<LONG>(clientWidth),
-		static_cast<LONG>(clientWidth)
+		static_cast<LONG>(clientHeight)
 	};
 
 	//ajusta el tamaño total de la ventana
@@ -136,6 +136,11 @@ Window::ProcessMessages() noexcept {
 bool
 Window::IsMinimized() const noexcept {
 	return m_handle && IsIconic(m_handle);
+}
+
+HWND
+Window::GetHandle() const noexcept {
+	return m_handle;
 }
 
 LRESULT CALLBACK Window::WindowProcedure(

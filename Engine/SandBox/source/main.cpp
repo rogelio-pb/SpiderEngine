@@ -7,8 +7,8 @@
  * se encarga de crear la ventana, inicializar el engin
  * ejecutar el ciclo principal de la aplicación y liberar
  * los recursos cuando la ventana se cierra
- * previousInstance Instancia anterior de la aplicacion
  * @param instance Instancia actual de la aplicacion
+ * @param previousInstance Instancia anterior de la aplicacion (siempre NULL)
  * @param commandLine Argumentos recibidos desde la línea de comandos.
  * @param showCommand Indica cómo se debe mostrar la ventan
  * @return 0 si la aplicación termina correctamente
@@ -16,10 +16,10 @@
  */
 
 int WINAPI
-wWinMain(HINSTANCE previousInstance,
-    HINSTANCE instance,
+wWinMain(HINSTANCE instance,
+    HINSTANCE previousInstance,
     PWSTR commandLine,
-    int showCommand){
+    int showCommand) {
 
     // Eestos parmetros no se utilizan en esta aplicacion
     UNREFERENCED_PARAMETER(previousInstance);
@@ -31,7 +31,7 @@ wWinMain(HINSTANCE previousInstance,
 
     Window window;
 
-  
+
     //Aqui se crea la ventana y configura el tamaño y titulo
     if (!window.Create(instance, L"Spider Engine", CLIENT_WIDTH, CLIENT_HEIGHT))
     {
@@ -41,10 +41,10 @@ wWinMain(HINSTANCE previousInstance,
             L"Sandbox Error",
             MB_OK | MB_ICONERROR
         );
-        return 1; 
+        return 1;
     }
-   
-    
+
+
     Engine engine;
     //Inicialza el engine utilizando la ventana creada
     if (!engine.Initialize(window.GetHandle(), CLIENT_WIDTH, CLIENT_HEIGHT))
@@ -59,7 +59,7 @@ wWinMain(HINSTANCE previousInstance,
             MB_OK | MB_ICONERROR
         );
 
-            return 1;
+        return 1;
     }
 
     //muestra la ventana en la pantalla
@@ -77,7 +77,7 @@ wWinMain(HINSTANCE previousInstance,
         }
         engine.Render();
     }
-    
+
     //libera los recrusos utilizados por el engine
     engine.Shutdown();
 
@@ -86,4 +86,4 @@ wWinMain(HINSTANCE previousInstance,
 
     return 0;
 
-   }
+}
