@@ -28,11 +28,9 @@ public:
 	ID3D11DeviceContext&
 		requireContext() const noexcept;
 
-
 	void
 		ClearRenderTargetView(ID3D11RenderTargetView* pRenderTargetView,
 			const float colorRGBA[4]) noexcept;
-
 
 	void
 		ClearDepthStencilView(ID3D11DepthStencilView* pDepthStencilView,
@@ -40,29 +38,28 @@ public:
 			float depth,
 			unsigned int stencil) noexcept;
 
-
 	void
 		OMSetRenderTargets(unsigned int numViews,
 			ID3D11RenderTargetView* const* ppRenderTargetViews,
 			ID3D11DepthStencilView* pDepthStencilView) noexcept;
 
-
 	void
 		RSSetViewports(unsigned int numViewports,
 			const D3D11_VIEWPORT* pViewports) noexcept;
 
+	void
+		PSSetShaderResources(unsigned int StartSlot,
+			unsigned int NumViews,
+			ID3D11ShaderResourceView* const* ppShaderResourceViews);
 
 	void
 		RSSetState(ID3D11RasterizerState* pRasterizerState) noexcept;
 
-
 	void
 		IASetInputLayout(ID3D11InputLayout* pInputLayout) noexcept;
 
-
 	void
 		IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY topology) noexcept;
-
 
 	void
 		IASetVertexBuffers(unsigned int startSlot,
@@ -71,30 +68,25 @@ public:
 			const unsigned int* pStrides,
 			const unsigned int* pOffsets) noexcept;
 
-
 	void
 		IASetIndexBuffer(ID3D11Buffer* pIndexBuffer,
 			DXGI_FORMAT format,
 			unsigned int offset) noexcept;
-
 
 	void
 		VSSetShader(ID3D11VertexShader* pVertexShader,
 			ID3D11ClassInstance* const* ppClassInstances = nullptr,
 			unsigned int numClassInstances = 0) noexcept;
 
-
 	void
 		PSSetShader(ID3D11PixelShader* pPixelShader,
 			ID3D11ClassInstance* const* ppClassInstances = nullptr,
 			unsigned int numClassInstances = 0) noexcept;
 
-
 	void
 		VSSetConstantBuffers(unsigned int startSlot,
 			unsigned int numBuffers,
 			ID3D11Buffer* const* ppConstantBuffers) noexcept;
-
 
 	void
 		UpdateSubresource(ID3D11Resource* pDstResource,
@@ -103,7 +95,6 @@ public:
 			const void* pSrcData,
 			unsigned int srcRowPitch,
 			unsigned int srcDepthPitch) noexcept;
-
 
 	void
 		DrawIndexed(unsigned int indexCount,

@@ -18,11 +18,11 @@ Device::CreateRenderTargetView(ID3D11Resource* pResource,
 		return E_POINTER;
 	}
 
-	*ppRTView = nullptr; // Initialize the output pointer to nullptr
+	*ppRTView = nullptr; 
 
 	if (m_device == nullptr || pResource == nullptr) {
 		ERROR("Device", "CreateRenderTargetView", "Device or resource pointer is null.");
-		return E_INVALIDARG; // Device not initialized
+		return E_INVALIDARG; 
 	}
 
 	HRESULT result = m_device->CreateRenderTargetView(pResource, pDesc, ppRTView);
@@ -48,7 +48,7 @@ Device::CreateTexture2D(const D3D11_TEXTURE2D_DESC* pDesc,
 		return E_POINTER;
 	}
 
-	*ppTexture2D = nullptr; // Initialize the output pointer to nullptr
+	*ppTexture2D = nullptr; 
 
 	if (m_device == nullptr || pDesc == nullptr) {
 		ERROR("Device", "CreateTexture2D", "Device or description pointer is null.");
@@ -75,7 +75,7 @@ Device::CreateDepthStencilView(ID3D11Resource* pResource,
 		return E_POINTER;
 	}
 
-	*ppDepthStencilView = nullptr; // Initialize the output pointer to nullptr
+	*ppDepthStencilView = nullptr; 
 
 	if (m_device == nullptr || pResource == nullptr) {
 		ERROR("Device", "CreateDepthStencilView", "Device or resource pointer is null.");
@@ -103,14 +103,14 @@ Device::CreateVertexShader(const void* pShaderBytecode,
 		return E_POINTER;
 	}
 
-	*ppVertexShader = nullptr; // Initialize the output pointer to nullptr
+	*ppVertexShader = nullptr;
 
 	if (m_device == nullptr || pShaderBytecode == nullptr || BytecodeLength == 0) {
 		ERROR("Device", "CreateVertexShader", "Device or shader bytecode pointer is null, or bytecode length is zero.");
 		return E_INVALIDARG;
 	}
 
-	// The actual implementation for creating a vertex shader is not provided in the original code.
+	
 	HRESULT result = m_device->CreateVertexShader(pShaderBytecode, BytecodeLength, pClassLinkage, ppVertexShader);
 
 	if (FAILED(result)) {
@@ -132,14 +132,13 @@ Device::CreatePixelShader(const void* pShaderBytecode,
 		return E_POINTER;
 	}
 
-	*ppPixelShader = nullptr; // Initialize the output pointer to nullptr
-
+	*ppPixelShader = nullptr; 
 	if (m_device == nullptr || pShaderBytecode == nullptr || BytecodeLength == 0) {
 		ERROR("Device", "CreatePixelShader", "Device or shader bytecode pointer is null, or bytecode length is zero.");
 		return E_INVALIDARG;
 	}
 
-	// The actual implementation for creating a pixel shader is not provided in the original code.
+	
 	HRESULT result = m_device->CreatePixelShader(pShaderBytecode, BytecodeLength, pClassLinkage, ppPixelShader);
 
 	if (FAILED(result)) {
@@ -162,7 +161,7 @@ Device::CreateInputLayout(const D3D11_INPUT_ELEMENT_DESC* pInputElementDescs,
 		return E_POINTER;
 	}
 
-	*ppInputLayout = nullptr; // Initialize the output pointer to nullptr
+	*ppInputLayout = nullptr; 
 
 	if (m_device == nullptr) {
 		ERROR("Device", "CreateInputLayout", "Device is not initialized.");
@@ -218,7 +217,7 @@ Device::CreateBuffer(const D3D11_BUFFER_DESC* pDesc,
 		return E_POINTER;
 	}
 
-	*ppBuffer = nullptr; // Initialize the output pointer to nullptr
+	*ppBuffer = nullptr; 
 
 	if (m_device == nullptr || pDesc == nullptr) {
 		ERROR("Device", "CreateBuffer", "Device or buffer description pointer is null.");
@@ -244,7 +243,7 @@ Device::CreateRasterizerState(const D3D11_RASTERIZER_DESC* pRasterizerDesc,
 		return E_POINTER;
 	}
 
-	*ppRasterizerState = nullptr; // Initialize the output pointer to nullptr
+	*ppRasterizerState = nullptr; 
 
 	HRESULT result = m_device->CreateRasterizerState(pRasterizerDesc, ppRasterizerState);
 
