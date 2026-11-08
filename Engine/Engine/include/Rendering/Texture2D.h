@@ -6,7 +6,8 @@ class DeviceContext;
 
 /**
 * @class Texture2D
-* @brief Una imagen guardada en la memoria de la tarjeta de video
+* @brief Texture 2D funciona como una imagen que vive en la tarjeta de video.
+* 
 * Sirve para varias cosas: puede ser una foto o dibujo que cubre un
 * objeto (una "textura"), la imagen donde se va a pintar la escena, o
 * la imagen que guarda qué tan lejos está cada cosa. Esta clase crea

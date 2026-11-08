@@ -3,7 +3,8 @@
 
 /**
 * @class DeviceContext
-* @brief Controla lo de la tarjeta de video
+* @brief Controla lo que contiene la tarjeta de video.
+* 
 * Si el Device fabrica las piezas, el DeviceContext es quien da las
 * órdenes: qué pintar, con que colores, con qué programas y en qué
 * orden. Cada vez que el motor dibuja algo en pantalla, le da una serie

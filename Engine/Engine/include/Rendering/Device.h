@@ -3,7 +3,8 @@
 
 /**
  * @class Device
- * @brief El de la tarjeta de video
+ * @brief La clase funciona como un fabricante de piezas para la tarjeta de video.
+ * 
  * Para dibujar en pantalla, la tarjeta de video necesita muchas piezas:
  * imágenes, cajas de datos, programas de dibujo, esta clase es la
  * encargada de fabricar todas esas pieza casi todo lo que se crea en

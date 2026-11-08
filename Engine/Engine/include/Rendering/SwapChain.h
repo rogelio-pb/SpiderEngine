@@ -8,7 +8,8 @@ class Texture2D;
 
 /**
 * @class SwapChain
-* @brief El "intercambiador de cuadros" entre el motor y la pantalla
+* @brief Es el encargado de mostrar en pantalla lo que la tarjeta de video dibuja.
+* 
 * Para que la imagen no se vea cortada o parpadeando, la tarjeta de video
 * no dibuja directamente sobre lo que ves. Dibuja en una imagen oculta
 * y, cuando termina, la intercambia con la que esta en pantalla

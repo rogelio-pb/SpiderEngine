@@ -1,0 +1,26 @@
+var class_direct_x_1_1_d_x11_1_1_alpha_test_effect =
+[
+    [ "AlphaTestEffect", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a7eb4bb5806718ae5a2612b641c66280f", null ],
+    [ "AlphaTestEffect", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a2b49f55018bba922110695b747df8b65", null ],
+    [ "AlphaTestEffect", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a82d450ca6d63226d45b0b3e25434825b", null ],
+    [ "~AlphaTestEffect", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#af8a614af8e962d6ea93e441b99206987", null ],
+    [ "Apply", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a37dae71d36beabf82159a855a14bfd54", null ],
+    [ "GetVertexShaderBytecode", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#af56dd2aeed6919dc2d46428ff4aab880", null ],
+    [ "operator=", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#ab761c1473925be2362470994e60a8322", null ],
+    [ "operator=", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#aa058e19b57321612d4d161fa28bef824", null ],
+    [ "SetAlpha", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a739a3322619b9da53f26b7a934824945", null ],
+    [ "SetAlphaFunction", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a0018db85b59c3dff6875615638034195", null ],
+    [ "SetColorAndAlpha", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a8f6f3f9918988ba7f0f3636e5d763abf", null ],
+    [ "SetDiffuseColor", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#ae4bafc12bf623c9104350723fa040c65", null ],
+    [ "SetFogColor", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a0566865e0fc384443894bcc90a033e49", null ],
+    [ "SetFogEnabled", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a3568b9722ef40dda4f65083e959ee07f", null ],
+    [ "SetFogEnd", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a5f5988bd498a5ea7866dd60c5dec9c6c", null ],
+    [ "SetFogStart", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#afdc3f60a7e349525e6b95371eef0dc7f", null ],
+    [ "SetMatrices", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#af789ec660f7576858c5aa27f8f64e767", null ],
+    [ "SetProjection", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a75cae7f4d95596a0af4e31afd3266e9d", null ],
+    [ "SetReferenceAlpha", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#ae9ec0774ad6930eb84366fe31a14e092", null ],
+    [ "SetTexture", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a8b9a974ccc054c1bb10bcb4c575e697d", null ],
+    [ "SetVertexColorEnabled", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a5e9fb9e7646d90229806a0cade89fa89", null ],
+    [ "SetView", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a9e2721b856000778fb82c935aef9b2fe", null ],
+    [ "SetWorld", "class_direct_x_1_1_d_x11_1_1_alpha_test_effect.html#a04e79e05a34ac8c70414f08c19973094", null ]
+];

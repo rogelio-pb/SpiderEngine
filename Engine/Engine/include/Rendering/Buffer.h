@@ -7,7 +7,8 @@ class DeviceContext;
 
 /**
  * @class Buffer
- * @brief Una "caja" en la memoria de la tarjeta de video que guarda datos
+ * @brief Funciona como una caja de memoria dentro de la tarjeta de video.
+ * 
  * La tarjeta de video no puede leer directamente la memoria normal de
  * la computadora. Para que pueda usar los datos de una figura 
  * primero hay que copiarlos a una caja
