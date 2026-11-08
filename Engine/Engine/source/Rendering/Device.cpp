@@ -1,5 +1,9 @@
 #include "Rendering/Device.h"
 
+
+//Aquí se implementan las funciones de la clase Device, que es responsable 
+//de crear y manejar los recursos de la tarjeta de video.
+
 Device::~Device() {
 	destroy();
 }

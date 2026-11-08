@@ -2,6 +2,8 @@
 #include "Rendering/Device.h"
 #include "Rendering/DeviceContext.h"
 
+
+//Clase que sirve para crear y manejar cajas de datos en la memoria de la tarjeta de video
 HRESULT
 Buffer::init(Device& device, const MeshComponent& mesh, unsigned int bindFlag) {
 	if (!device.getDevice()) {

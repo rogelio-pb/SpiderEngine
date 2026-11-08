@@ -2,6 +2,9 @@
 #include "Rendering/Device.h"
 #include "Rendering/DeviceContext.h"
 
+//Se implementan las funciones de la clase Texture2D,
+//que es responsable de crear y manejar imágenes en la memoria de la tarjeta de video.
+
 Texture2D::~Texture2D() noexcept {
 	destroy();
 }

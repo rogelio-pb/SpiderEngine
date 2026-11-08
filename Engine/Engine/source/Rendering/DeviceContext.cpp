@@ -1,5 +1,9 @@
 #include "Rendering/DeviceContext.h"
 
+
+//Se implementan las funciones de la clase DeviceContext, 
+//que es responsable de dar órdenes a la tarjeta de video para dibujar en pantalla.
+
 DeviceContext::~DeviceContext()
 {
 	destroy();
