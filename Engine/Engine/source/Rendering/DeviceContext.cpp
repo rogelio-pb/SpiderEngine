@@ -1,8 +1,14 @@
 #include "Rendering/DeviceContext.h"
 
-DeviceContext::~DeviceContext() {
+
+//Se implementan las funciones de la clase DeviceContext, 
+//que es responsable de dar órdenes a la tarjeta de video para dibujar en pantalla.
+
+DeviceContext::~DeviceContext()
+{
 	destroy();
 }
+
 void
 DeviceContext::destroy() {
 	if (m_deviceContext) {
@@ -66,6 +72,18 @@ DeviceContext::RSSetViewports(unsigned int numViewports,
 		return;
 	}
 	requireContext().RSSetViewports(numViewports, pViewports);
+}
+
+void
+DeviceContext::PSSetShaderResources(unsigned int StartSlot,
+	unsigned int NumViews,
+	ID3D11ShaderResourceView* const* ppShaderResourceViews) {
+	if (!ppShaderResourceViews || NumViews == 0) {
+		ERROR("DeviceContext", "PSSetShaderResources", "Invalid shader resource view parameters.");
+		return;
+	}
+
+	requireContext().PSSetShaderResources(StartSlot, NumViews, ppShaderResourceViews);
 }
 
 void

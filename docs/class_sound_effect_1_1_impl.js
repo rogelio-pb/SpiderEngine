@@ -1,0 +1,27 @@
+var class_sound_effect_1_1_impl =
+[
+    [ "Impl", "class_sound_effect_1_1_impl.html#a842152614bc8285a5b73584c2f876238", null ],
+    [ "Impl", "class_sound_effect_1_1_impl.html#a540358d72afa3a0f75caab1450e404b1", null ],
+    [ "Impl", "class_sound_effect_1_1_impl.html#a47ff927e486873ac54f3aaa7a44b1e39", null ],
+    [ "~Impl", "class_sound_effect_1_1_impl.html#a3473e514782087859c238b6561650533", null ],
+    [ "GatherStatistics", "class_sound_effect_1_1_impl.html#afe49096e7a5ff9c906ebcdaec45355d9", null ],
+    [ "Initialize", "class_sound_effect_1_1_impl.html#aea61ab41467b8684d89a5fc2f5058d86", null ],
+    [ "OnBufferEnd", "class_sound_effect_1_1_impl.html#ab4479a7d031b78ca55d9b3d85fa2373c", null ],
+    [ "OnCriticalError", "class_sound_effect_1_1_impl.html#ae4171bd1e99ba11606849847ea6ce892", null ],
+    [ "OnDestroyEngine", "class_sound_effect_1_1_impl.html#ac469ff2f29c6770f7df6169e4b46723e", null ],
+    [ "OnDestroyParent", "class_sound_effect_1_1_impl.html#aace3bda21000312ff482f8333d18aaca", null ],
+    [ "OnReset", "class_sound_effect_1_1_impl.html#a2d428c3fea8d97264f3f499b04bfd358", null ],
+    [ "OnTrim", "class_sound_effect_1_1_impl.html#a59959a61420bbfef4b3b8c31533b6cdd", null ],
+    [ "OnUpdate", "class_sound_effect_1_1_impl.html#ac0e0cb786d8198d8407d62d56176c6f4", null ],
+    [ "operator=", "class_sound_effect_1_1_impl.html#a95ba6d6de1d81c1b2a21af4f235da194", null ],
+    [ "operator=", "class_sound_effect_1_1_impl.html#a3f14c4c5afdc518404f47cfd473f84ac", null ],
+    [ "Play", "class_sound_effect_1_1_impl.html#a48f41a4f4385c37533ccfae5e2c99de8", null ],
+    [ "mAudioBytes", "class_sound_effect_1_1_impl.html#aa47422d66c210300abd52b642b0a6063", null ],
+    [ "mEngine", "class_sound_effect_1_1_impl.html#a171c001dc6ca068a07b06043b1d97646", null ],
+    [ "mInstances", "class_sound_effect_1_1_impl.html#a198fb653bd4b62ec06b5594f35582249", null ],
+    [ "mLoopLength", "class_sound_effect_1_1_impl.html#a7ac82b4026dd213cc2483bfeeb693960", null ],
+    [ "mLoopStart", "class_sound_effect_1_1_impl.html#a8910a239884f10e2c6ca7bfbf66621d7", null ],
+    [ "mOneShots", "class_sound_effect_1_1_impl.html#a9ea47403a95ceb3f7e88cdab5a60c2ae", null ],
+    [ "mStartAudio", "class_sound_effect_1_1_impl.html#a21aec5de45dd277581e63f5496c67816", null ],
+    [ "mWaveFormat", "class_sound_effect_1_1_impl.html#a35ac500f613b5e66872feee7513edd78", null ]
+];

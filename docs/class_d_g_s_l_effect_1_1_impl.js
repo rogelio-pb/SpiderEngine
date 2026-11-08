@@ -1,0 +1,25 @@
+var class_d_g_s_l_effect_1_1_impl =
+[
+    [ "Impl", "class_d_g_s_l_effect_1_1_impl.html#a535d5c4d1da12c1a328059c0291067fc", null ],
+    [ "Impl", "class_d_g_s_l_effect_1_1_impl.html#ab7d0430a1af6f4cea5f98ed6f8afc937", null ],
+    [ "Impl", "class_d_g_s_l_effect_1_1_impl.html#aa89a8a26fe22fc53038a2ea81fdaf825", null ],
+    [ "Apply", "class_d_g_s_l_effect_1_1_impl.html#aed8fa7fdf8dcf099138dc538ff6eb1e3", null ],
+    [ "GetVertexShaderBytecode", "class_d_g_s_l_effect_1_1_impl.html#a5d4d3d4d576931e055f61fff7de6fcf4", null ],
+    [ "Initialize", "class_d_g_s_l_effect_1_1_impl.html#a6c0a64694a4b455fca4c130978b9c46b", null ],
+    [ "operator=", "class_d_g_s_l_effect_1_1_impl.html#ac51a1c573230e6ba8cc7c6446b21a200", null ],
+    [ "operator=", "class_d_g_s_l_effect_1_1_impl.html#adb46d18415daaf85d54bb85f1ee477c3", null ],
+    [ "alphaDiscardEnabled", "class_d_g_s_l_effect_1_1_impl.html#a926e57683e1c3fd099d66fa9527521e4", null ],
+    [ "constants", "class_d_g_s_l_effect_1_1_impl.html#a889441e7d7ba758fd227fc98c09a5a8f", null ],
+    [ "dirtyFlags", "class_d_g_s_l_effect_1_1_impl.html#ad29892dc73a5743d6cd4ff1f376082d3", null ],
+    [ "lightDiffuseColor", "class_d_g_s_l_effect_1_1_impl.html#a0cf3b5c7e2987fab757d19b1e0533892", null ],
+    [ "lightEnabled", "class_d_g_s_l_effect_1_1_impl.html#a73a1f9fcefd906e32a5cf178404bb99b", null ],
+    [ "lightSpecularColor", "class_d_g_s_l_effect_1_1_impl.html#a76de32df1331b4237e2f4b68a5801803", null ],
+    [ "projection", "class_d_g_s_l_effect_1_1_impl.html#a82fb5e890dea36151af2d3f6fc23617b", null ],
+    [ "specularEnabled", "class_d_g_s_l_effect_1_1_impl.html#a195b0fe65bd0a320289eb832554df8c9", null ],
+    [ "textureEnabled", "class_d_g_s_l_effect_1_1_impl.html#a5c954a215c27eea1ab159e2667fa4156", null ],
+    [ "textures", "class_d_g_s_l_effect_1_1_impl.html#a297c0ddf83ddd57cc2a7a2980f8237c3", null ],
+    [ "vertexColorEnabled", "class_d_g_s_l_effect_1_1_impl.html#ae88ea9b186c029b2eef642b116b0b8f9", null ],
+    [ "view", "class_d_g_s_l_effect_1_1_impl.html#a180b3a72ef62507ff9842791b189440a", null ],
+    [ "weightsPerVertex", "class_d_g_s_l_effect_1_1_impl.html#a0473a7373c8bf283a967660c2d979070", null ],
+    [ "world", "class_d_g_s_l_effect_1_1_impl.html#aa42b0dd0ea972fb3c493229281cb575c", null ]
+];

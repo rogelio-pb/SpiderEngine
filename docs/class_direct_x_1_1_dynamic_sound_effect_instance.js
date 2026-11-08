@@ -1,0 +1,27 @@
+var class_direct_x_1_1_dynamic_sound_effect_instance =
+[
+    [ "Impl", "class_dynamic_sound_effect_instance_1_1_impl.html", "class_dynamic_sound_effect_instance_1_1_impl" ],
+    [ "DynamicSoundEffectInstance", "class_direct_x_1_1_dynamic_sound_effect_instance.html#afa9579952e3ded863f99fd20f50f55d1", null ],
+    [ "DynamicSoundEffectInstance", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a64ffda94cb1a05a4e22eb03eec6097b5", null ],
+    [ "DynamicSoundEffectInstance", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a32b39da7b860cbfce65cf49b9f8ce53d", null ],
+    [ "~DynamicSoundEffectInstance", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a58ab0ed7d0ccbc8ec2767e3307527b27", null ],
+    [ "Apply3D", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a3599d3a3b1b5bef0d615163c1344be37", null ],
+    [ "GetChannelCount", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a6f7ac32fe04fda342b85f5dc24cc06b5", null ],
+    [ "GetFormat", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a852170003fb3beee0a5c659502dc2c4c", null ],
+    [ "GetPendingBufferCount", "class_direct_x_1_1_dynamic_sound_effect_instance.html#ab8e3b9ab1548c894bf314df20e2faf15", null ],
+    [ "GetSampleDuration", "class_direct_x_1_1_dynamic_sound_effect_instance.html#aa9ae53d9c35abc8274c1f356d589bf08", null ],
+    [ "GetSampleDurationMS", "class_direct_x_1_1_dynamic_sound_effect_instance.html#adf63d6ec1b7b724d8f087ac22bb75859", null ],
+    [ "GetSampleSizeInBytes", "class_direct_x_1_1_dynamic_sound_effect_instance.html#ad03edc75b752c30116be5ea21f27633c", null ],
+    [ "GetState", "class_direct_x_1_1_dynamic_sound_effect_instance.html#ae79b9a3e65009b622bfc06e4d5115b1e", null ],
+    [ "operator=", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a453f111029c342fd868565f7ccbffe5e", null ],
+    [ "operator=", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a0cac6d69e023a3d652c486982ae7dfc5", null ],
+    [ "Pause", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a67c73e3e6565b32613e533c671c5b5fe", null ],
+    [ "Play", "class_direct_x_1_1_dynamic_sound_effect_instance.html#aca6b20fadaff171d9b1e8268f908ec5d", null ],
+    [ "Resume", "class_direct_x_1_1_dynamic_sound_effect_instance.html#ae1c36b3e5a2c672afe6ed87f73c537ce", null ],
+    [ "SetPan", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a740edd74370db6d482ac043ed8cdc3ce", null ],
+    [ "SetPitch", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a527abe966b9921fa80c97656ed51c1a9", null ],
+    [ "SetVolume", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a92a29c096bbaa43c716a605989fe001d", null ],
+    [ "Stop", "class_direct_x_1_1_dynamic_sound_effect_instance.html#ac2b47dce4538d34747ca23ab0e5c2bdf", null ],
+    [ "SubmitBuffer", "class_direct_x_1_1_dynamic_sound_effect_instance.html#aa7aa2acdad541463f7f51449202fe335", null ],
+    [ "SubmitBuffer", "class_direct_x_1_1_dynamic_sound_effect_instance.html#a1d0a991848dc9dea44d724689259b900", null ]
+];

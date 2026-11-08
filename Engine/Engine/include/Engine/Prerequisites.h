@@ -1,5 +1,6 @@
 #pragma once
 #include "API.h"
+#include <cstdint>
 #include <DirectXMath.h>
 #include <Windows.h>
 #include <d3d11.h>
@@ -7,7 +8,6 @@
 #include <sstream>
 #include <cstddef>
 #include <chrono>
-#include <cstdint>
 #include <new>
 
 // MACROS
@@ -32,30 +32,41 @@
     }                                                         \
 }
 
+
+enum
+    ExtensionType {
+    DDS = 0,
+    PNG = 1,
+    JPG = 2
+};
+
+struct
+    Vertex {
+    float position[3];
+    float color[4];
+};
+
+
 template<typename T>
-void
-SafeRelease(T * &object) noexcept {
-	if (object != nullptr)
-	{
-		object->Release();
-		object = nullptr;
-	}
+void SafeRelease(T*& object) noexcept
+{
+    if (object != nullptr)
+    {
+        object->Release();
+        object = nullptr;
+    }
 }
-/**
- * @brief Funciones principales que forman parte de la API del Engine
- * Estas funciones permiten que codigo externo pueda
- * inicializar, utilizar y cerrar el Engine
- */
+
 extern "C" {
-	ENGINE_API bool
-		engine_Initialize(HWND hwnd, int width, int height) noexcept;
+    ENGINE_API bool
+        Engine_Initialize(HWND hwnd, int width, int height) noexcept;
 
-	ENGINE_API void
-		Engine_Render() noexcept;
+    ENGINE_API void
+        Engine_Update() noexcept;
 
-	ENGINE_API void
-		Engine_Render() noexcept;
+    ENGINE_API void
+        Engine_Render() noexcept;
 
-	ENGINE_API void
-		Engine_Shutdown() noexcept;
+    ENGINE_API void
+        Engine_Shutdown() noexcept;
 }

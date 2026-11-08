@@ -1,0 +1,27 @@
+var searchData=
+[
+  ['october_2012_202012_0',['October 12, 2012',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md102',1,'']]],
+  ['october_2013_202021_1',['October 13, 2021',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md27',1,'']]],
+  ['october_2017_202019_2',['October 17, 2019',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md42',1,'']]],
+  ['october_2017_202022_3',['October 17, 2022',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md19',1,'']]],
+  ['october_2018_202021_4',['October 18, 2021',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md26',1,'']]],
+  ['october_202_202012_5',['October 2, 2012',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md103',1,'']]],
+  ['october_2025_202018_6',['October 25, 2018',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md50',1,'']]],
+  ['october_2027_202025_7',['October 27, 2025',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md4',1,'']]],
+  ['october_2028_202013_8',['October 28, 2013',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md94',1,'']]],
+  ['october_2028_202014_9',['October 28, 2014',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md87',1,'']]],
+  ['october_2028_202023_10',['October 28, 2023',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md12',1,'']]],
+  ['october_2028_202024_11',['October 28, 2024',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md7',1,'']]],
+  ['october_2030_202012_12',['October 30, 2012',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md101',1,'']]],
+  ['october_2030_202015_13',['October 30, 2015',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md79',1,'']]],
+  ['october_2031_202018_14',['October 31, 2018',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md49',1,'']]],
+  ['october_206_202016_15',['October 6, 2016',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_h_a_n_g_e_l_o_g.html#autotoc_md66',1,'']]],
+  ['of_20conduct_16',['of Conduct',['../dir_678e342becccb3083dd39e672d3e5893.html#autotoc_md121',1,'Code of Conduct'],['../md__engine_2_third_parties_2_direct_x_t_k_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html',1,'Microsoft Open Source Code of Conduct']]],
+  ['ondevicelost_17',['OnDeviceLost',['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-tutorial_2reference_2step4.html#autotoc_md177',1,'Game.cpp — OnDeviceLost'],['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-tutorial_2reference_2step5.html#autotoc_md192',1,'Game.cpp — OnDeviceLost'],['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-tutorial_2reference_2step6.html#autotoc_md206',1,'Game.cpp — OnDeviceLost'],['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-tutorial_2reference_2step7.html#autotoc_md226',1,'Game.cpp — OnDeviceLost']]],
+  ['open_20source_20code_20of_20conduct_18',['Microsoft Open Source Code of Conduct',['../md__engine_2_third_parties_2_direct_x_t_k_2_c_o_d_e___o_f___c_o_n_d_u_c_t.html',1,'']]],
+  ['optional_20but_20recommended_19',['Optional but Recommended',['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-tutorial_2reference_2step0.html#autotoc_md132',1,'']]],
+  ['out_20previous_20step_20',['Game.cpp — Render (comment out previous step)',['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-tutorial_2reference_2step7.html#autotoc_md219',1,'']]],
+  ['out_20sprite_20drawing_20keeping_20the_20text_21',['Game.cpp — Render (comment out sprite drawing keeping the text)',['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-tutorial_2reference_2step6.html#autotoc_md200',1,'']]],
+  ['overview_22',['Overview',['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-usage_2reference_2overview.html',1,'DirectX Tool Kit — API Reference Overview'],['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-tutorial_2reference_2step1.html#autotoc_md150',1,'Overview'],['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-usage_2_s_k_i_l_l.html#autotoc_md258',1,'Overview']]],
+  ['ownership_23',['Resource Ownership',['../md__engine_2_third_parties_2_direct_x_t_k_2skills_2directxtk-usage_2_s_k_i_l_l.html#autotoc_md267',1,'']]]
+];
